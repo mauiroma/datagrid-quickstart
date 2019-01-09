@@ -51,14 +51,14 @@ public class GetController {
 
     // Called by the get.xhtml - get button
     public void getOne() {
-        RemoteCache<String, String> c = m.getCache();
+        RemoteCache<String, String> c = m.getCache(cache);
         message = c.get(key);
         log.info("get: " + key + " " + message);
     }
 
     // Called by the get.xhtml - get all button
     public void getAll() {
-        RemoteCache<String, String> c = m.getCache();
+        RemoteCache<String, String> c = m.getCache(cache);
 
         Set<String> keySet = c.keySet();
         for (String key : keySet) {
