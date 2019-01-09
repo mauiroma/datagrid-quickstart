@@ -1,0 +1,195 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+   <modelVersion>4.0.0</modelVersion>
+
+   <groupId>org.jboss.quickstarts.jdg</groupId>
+   <artifactId>jboss-secure-embedded-cache-quickstart</artifactId>
+   <packaging>war</packaging>
+   <version>7.2.0.Final-redhat-9</version>
+
+   <name>JBoss JDG Quickstart: secure-embedded-cache</name>
+   <description>This quickstart demonstrates security in an embedded cache running within a webapp</description>
+
+   <licenses>
+      <license>
+         <name>Apache License, Version 2.0</name>
+         <distribution>repo</distribution>
+         <url>http://www.apache.org/licenses/LICENSE-2.0.html</url>
+      </license>
+   </licenses>
+
+   <properties>
+      <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+      <maven.compiler.source>1.8</maven.compiler.source>
+      <maven.compiler.target>1.8</maven.compiler.target>
+
+      <version.jboss.spec.javaee.7.0>9.0.1.Final</version.jboss.spec.javaee.7.0>
+      <version.org.infinispan>8.5.0.Final-redhat-9</version.org.infinispan>
+   </properties>
+
+   <dependencyManagement>
+      <dependencies>
+         <!-- Picketbox contains dependency for 1.0.1B, 1.1 is more convinient -->
+         <dependency>
+            <groupId>javax.transaction</groupId>
+            <artifactId>jta</artifactId>
+            <version>1.1</version>
+         </dependency>
+         <dependency>
+            <groupId>org.wildfly.bom</groupId>
+            <artifactId>jboss-javaee-7.0-wildfly-with-tools</artifactId>
+            <version>${version.jboss.spec.javaee.7.0}</version>
+            <type>pom</type>
+            <scope>import</scope>
+         </dependency>
+         <dependency>
+            <groupId>org.infinispan</groupId>
+            <artifactId>infinispan-bom</artifactId>
+            <version>${version.org.infinispan}</version>
+            <type>pom</type>
+            <scope>import</scope>
+         </dependency>
+      </dependencies>
+   </dependencyManagement>
+
+   <dependencies>
+      <dependency>
+         <groupId>org.infinispan</groupId>
+         <artifactId>infinispan-embedded</artifactId>
+      </dependency>
+      <dependency>
+         <groupId>javax.enterprise</groupId>
+         <artifactId>cdi-api</artifactId>
+         <scope>provided</scope>
+      </dependency>
+      <dependency>
+         <groupId>org.jboss.resteasy</groupId>
+         <artifactId>jaxrs-api</artifactId>
+         <version>3.0.11.Final</version>
+         <scope>provided</scope>
+      </dependency>
+      <dependency>
+         <groupId>org.jboss.spec.javax.servlet</groupId>
+         <artifactId>jboss-servlet-api_3.1_spec</artifactId>
+         <scope>provided</scope>
+      </dependency>
+      <dependency>
+         <groupId>org.picketbox</groupId>
+         <artifactId>picketbox-spi-bare</artifactId>
+         <version>4.0.20.Final</version>
+         <scope>provided</scope>
+      </dependency>
+      <dependency>
+         <groupId>org.codehaus.jackson</groupId>
+         <artifactId>jackson-mapper-asl</artifactId>
+         <version>1.9.9</version>
+         <scope>provided</scope>
+      </dependency>
+      <dependency>
+         <groupId>org.picketbox</groupId>
+         <artifactId>jbosssx-bare</artifactId>
+         <version>4.0.20.Final</version>
+         <scope>provided</scope>
+      </dependency>
+      <dependency>
+         <groupId>org.wildfly.arquillian</groupId>
+         <artifactId>wildfly-arquillian-container-managed</artifactId>
+         <scope>test</scope>
+      </dependency>
+      <dependency>
+         <groupId>org.jboss.arquillian.junit</groupId>
+         <artifactId>arquillian-junit-container</artifactId>
+         <scope>test</scope>
+      </dependency>
+      <dependency>
+         <groupId>junit</groupId>
+         <artifactId>junit</artifactId>
+         <scope>test</scope>
+      </dependency>
+      <dependency>
+         <groupId>org.apache.httpcomponents</groupId>
+         <artifactId>httpclient</artifactId>
+         <version>4.3.3</version>
+         <scope>test</scope>
+      </dependency>
+      <dependency>
+         <groupId>org.jboss.logmanager</groupId>
+         <artifactId>jboss-logmanager</artifactId>
+         <version>2.0.0.Final</version>
+      </dependency>
+   </dependencies>
+
+   <build>
+      <!-- Set the name of the war, used as the context root when the app is deployed -->
+      <finalName>${project.artifactId}</finalName>
+      <plugins>
+         <plugin>
+            <artifactId>maven-war-plugin</artifactId>
+            <version>2.3</version>
+            <configuration>
+               <failOnMissingWebXml>false</failOnMissingWebXml>
+               <archive>
+                  <manifestEntries>
+                     <Dependencies>org.codehaus.jackson.jackson-mapper-asl,org.picketbox</Dependencies>
+                  </manifestEntries>
+               </archive>
+            </configuration>
+         </plugin>
+         <plugin>
+            <groupId>org.wildfly.plugins</groupId>
+            <artifactId>wildfly-maven-plugin</artifactId>
+            <configuration>
+               <execute-commands>
+                  <scripts>
+                     <script>cli/security-domain.cli</script>
+                  </scripts>
+               </execute-commands>
+            </configuration>
+         </plugin>
+      </plugins>
+   </build>
+
+   <profiles>
+      <profile>
+         <id>ci</id>
+         <activation>
+            <activeByDefault>true</activeByDefault>
+         </activation>
+         <build>
+            <plugins>
+               <!-- Maven Surefire Plugin to skip tests on build -->
+               <plugin>
+                  <groupId>org.apache.maven.plugins</groupId>
+                  <artifactId>maven-surefire-plugin</artifactId>
+                  <configuration>
+                     <skipTests>true</skipTests>
+                  </configuration>
+               </plugin>
+            </plugins>
+         </build>
+      </profile>
+      <profile>
+         <id>library-tests</id>
+         <build>
+            <plugins>
+               <plugin>
+                  <artifactId>maven-surefire-plugin</artifactId>
+                  <configuration>
+                     <reportNameSuffix>uitests-eap</reportNameSuffix>
+                     <systemPropertyVariables>
+                        <quickstart.war.directory>${basedir}/target</quickstart.war.directory>
+                        <quickstart.war.file>${project.artifactId}.war</quickstart.war.file>
+                     </systemPropertyVariables>
+                     <systemProperties>
+                        <arquillian.launch>jbossas-managed</arquillian.launch>
+                     </systemProperties>
+                  </configuration>
+               </plugin>
+            </plugins>
+         </build>
+      </profile>
+   </profiles>
+
+</project>
+

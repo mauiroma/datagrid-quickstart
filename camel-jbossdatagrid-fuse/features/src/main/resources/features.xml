@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<features xmlns="http://karaf.apache.org/xmlns/features/v1.0.0" name="org.jboss.quickstarts.jdg">
+   <feature name="pojos" resolver="(obr)" version="${project.version}">
+      <feature>camel-bindy</feature>
+      <bundle>mvn:org.jboss.quickstarts.jdg/pojos/${project.version}</bundle>
+   </feature>
+   <feature name="local-datagrid-consumer" resolver="(obr)"
+      version="${project.version}">
+      <feature>camel-gson</feature>
+      <feature>camel-websocket</feature>
+      <feature>pojos</feature>
+      <bundle>mvn:org.jboss.quickstarts.jdg/local-datagrid-consumer/${project.version}</bundle>
+   </feature>
+   <feature name="local-datagrid-producer" resolver="(obr)"
+      version="${project.version}">
+      <feature>pojos</feature>
+      <bundle>mvn:org.jboss.quickstarts.jdg/local-datagrid-producer/${project.version}</bundle>
+   </feature>
+</features>
