@@ -60,10 +60,10 @@ public class CacheManagerProvider {
             log.info("\n\n RemoteCacheManager does not exist - constructing a new one\n\n");
             ConfigurationBuilder builder = new  ConfigurationBuilder();
             builder.addServer()
-                    .host("localhost")
-                    .port(11222)
-//                    .host(System.getenv("HOTROD_SERVICE"))
-//                    .port(Integer.parseInt(System.getenv("HOTROD_SERVICE_PORT")))
+//                    .host("localhost")
+//                    .port(11222)
+                    .host(System.getenv("HOTROD_SERVICE"))
+                    .port(Integer.parseInt(System.getenv("HOTROD_SERVICE_PORT")))
                     .marshaller(new ProtoStreamMarshaller()); // The Protobuf based marshaller is required for query capabilities
             manager = new RemoteCacheManager(builder.build());
             try {
