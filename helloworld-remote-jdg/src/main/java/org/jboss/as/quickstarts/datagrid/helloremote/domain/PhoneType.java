@@ -14,34 +14,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.as.quickstarts.datagrid.helloworld;
-
-import org.infinispan.client.hotrod.RemoteCacheManager;
-
-import javax.enterprise.inject.Produces;
-import javax.enterprise.inject.spi.InjectionPoint;
-import javax.inject.Inject;
-import java.util.logging.Logger;
+package org.jboss.as.quickstarts.datagrid.helloremote.domain;
 
 /**
- * Provides various resources including a cache manager.
- * 
- * @author Burr Sutter
- * 
+ * @author Adrian Nistor
  */
-public class Resources {
-
-    @Inject
-    MyCacheManagerProvider cacheManagerProvider;
-
-    @Produces
-    Logger getLogger(InjectionPoint ip) {
-        String category = ip.getMember().getDeclaringClass().getName();
-        return Logger.getLogger(category);
-    }
-
-    @Produces
-    RemoteCacheManager getRemoteCacheManager() {
-        return cacheManagerProvider.getCacheManager();
-    }
+public enum PhoneType {
+   MOBILE,
+   HOME,
+   WORK
 }

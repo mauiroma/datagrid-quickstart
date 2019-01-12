@@ -22,7 +22,6 @@
       http://java.sun.com/xml/ns/javaee
       http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
 
-
     <!--
     Some browsers cookies are stored using host + context combination. Since it doesn't consider the port,
     both applications running on the same host (localhost) and even using different ports (8080 and 8180) can share

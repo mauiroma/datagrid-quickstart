@@ -72,6 +72,16 @@
 
     <dependencies>
 
+
+        <dependency>
+            <groupId>org.infinispan</groupId>
+            <artifactId>infinispan-lucene-directory</artifactId>
+            <!--version>8.5.0.Final-redhat-9</version-->
+            <scope>provided</scope>
+        </dependency>
+
+
+
         <dependency>
             <groupId>org.infinispan</groupId>
             <artifactId>infinispan-remote</artifactId>
@@ -83,6 +93,13 @@
         <dependency>
             <groupId>org.jboss.spec.javax.servlet</groupId>
             <artifactId>jboss-servlet-api_3.1_spec</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
+
+        <dependency>
+            <groupId>org.jboss.spec.javax.ws.rs</groupId>
+            <artifactId>jboss-jaxrs-api_2.0_spec</artifactId>
             <scope>provided</scope>
         </dependency>
 
@@ -120,6 +137,12 @@
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.jboss.spec.javax.ejb</groupId>
+            <artifactId>jboss-ejb-api_3.2_spec</artifactId>
+            <version>1.0.0.Final-redhat-1</version>
+            <scope>provided</scope>
         </dependency>
 
     </dependencies>
