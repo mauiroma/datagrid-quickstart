@@ -64,7 +64,13 @@ public class CacheManagerProvider {
 //                    .port(11222)
                     .host(System.getenv("HOTROD_SERVICE"))
                     .port(Integer.parseInt(System.getenv("HOTROD_SERVICE_PORT")))
-                    .marshaller(new ProtoStreamMarshaller()); // The Protobuf based marshaller is required for query capabilities
+                    .marshaller(new ProtoStreamMarshaller()) // The Protobuf based marshaller is required for query capabilities
+                    .security()
+                    .authentication()
+                    .enable()
+                    .serverName("jdg-server")
+                    .saslMechanism("DIGEST-MD5")
+                    .callbackHandler(new MyCallbackHandler("eap", "ApplicationRealm", "password".toCharArray()));
             manager = new RemoteCacheManager(builder.build());
             try {
                 registerSchemasAndMarshallers(manager);
