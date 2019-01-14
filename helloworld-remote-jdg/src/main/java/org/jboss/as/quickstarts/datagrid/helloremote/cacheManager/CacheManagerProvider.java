@@ -60,17 +60,17 @@ public class CacheManagerProvider {
             log.info("\n\n RemoteCacheManager does not exist - constructing a new one\n\n");
             ConfigurationBuilder builder = new  ConfigurationBuilder();
             builder.addServer()
-//                    .host("localhost")
-//                    .port(11222)
-                    .host(System.getenv("HOTROD_SERVICE"))
-                    .port(Integer.parseInt(System.getenv("HOTROD_SERVICE_PORT")))
+//                       .host("localhost")
+//                      .port(11222)
+                        .host(System.getenv("HOTROD_SERVICE"))
+                        .port(Integer.parseInt(System.getenv("HOTROD_SERVICE_PORT")))
                     .marshaller(new ProtoStreamMarshaller()) // The Protobuf based marshaller is required for query capabilities
                     .security()
-                    .authentication()
-                    .enable()
-                    .serverName("jdg-server")
-                    .saslMechanism("DIGEST-MD5")
-                    .callbackHandler(new MyCallbackHandler("eap", "ApplicationRealm", "password".toCharArray()));
+                        .authentication()
+                            .enable()
+                            .serverName("jdg-server")
+                            .saslMechanism("DIGEST-MD5")
+                            .callbackHandler(new MyCallbackHandler("eap", "ApplicationRealm", "password".toCharArray()));
             manager = new RemoteCacheManager(builder.build());
             try {
                 registerSchemasAndMarshallers(manager);
@@ -89,7 +89,12 @@ public class CacheManagerProvider {
     private void registerSchemasAndMarshallers(RemoteCacheManager cacheManager) throws IOException {
         // Register entity marshallers on the client side ProtoStreamMarshaller instance associated with the remote cache manager.
         SerializationContext ctx = getSerializationContext(cacheManager);
-        ctx.registerProtoFiles(FileDescriptorSource.fromResources(PROTOBUF_DEFINITION_RESOURCE));
+
+
+
+
+//        ctx.registerProtoFiles(FileDescriptorSource.fromResources(PROTOBUF_DEFINITION_RESOURCE));
+        ctx.registerProtoFiles(FileDescriptorSource.fromResources(this.getClass().getClassLoader(), PROTOBUF_DEFINITION_RESOURCE));
         ctx.registerMarshaller(new PersonMarshaller());
         ctx.registerMarshaller(new PhoneNumberMarshaller());
         ctx.registerMarshaller(new PhoneTypeMarshaller());

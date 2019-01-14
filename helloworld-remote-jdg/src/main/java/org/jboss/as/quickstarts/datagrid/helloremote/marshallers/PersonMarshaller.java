@@ -19,7 +19,6 @@ package org.jboss.as.quickstarts.datagrid.helloremote.marshallers;
 import org.infinispan.protostream.MessageMarshaller;
 import org.jboss.as.quickstarts.datagrid.helloremote.domain.Person;
 import org.jboss.as.quickstarts.datagrid.helloremote.domain.PhoneNumber;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
